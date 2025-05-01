@@ -1,6 +1,7 @@
 1.txt
 # Игнорируем конф.данные
 secret.json
+node_modules
 
 /db_dumps/
 
@@ -137,7 +138,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-cooking
+cooking_site_env
 .env
 .venv
 env/

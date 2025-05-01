@@ -55,6 +55,8 @@ class Recipe(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата обновления")
     is_published = models.BooleanField(default=True, verbose_name="Опубликовано")
+    rating_average = models.FloatField(default=0.0)
+    rating_count = models.IntegerField(default=0)
 
     def __str__(self):
         return self.title
@@ -62,6 +64,14 @@ class Recipe(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title, allow_unicode=True)
         super().save(*args, **kwargs)
+    
+    def update_rating(self):
+      comments = self.comments.all()
+      if comments.count() > 0:
+        average = sum([comment.rating for comment in comments]) / comments.count()
+        self.rating_average = average
+        self.rating_count = comments.count()
+        self.save()
 
     class Meta:
         verbose_name = "Рецепт"

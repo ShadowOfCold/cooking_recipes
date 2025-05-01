@@ -94,3 +94,8 @@ class RecipeIngredientDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+class RecommendedRecipeList(generics.ListAPIView):
+    queryset = Recipe.objects.all().order_by('-rating_average', '-rating_count')
+    serializer_class = RecipeSerializer
+    pagination_class = None

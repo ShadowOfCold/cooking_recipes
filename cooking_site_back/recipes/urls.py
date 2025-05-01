@@ -17,6 +17,7 @@ urlpatterns = [
     path('recipe_tags/<int:pk>/', views.RecipeTagDetail.as_view()),
     path('recipe_ingredients/', views.RecipeIngredientList.as_view()),
     path('recipe_ingredients/<int:pk>/', views.RecipeIngredientDetail.as_view()),
+    path('recipes/recommended/', views.RecommendedRecipeList.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
