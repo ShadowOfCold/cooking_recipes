@@ -1,146 +1,63 @@
 <template>
-  <div class="home-view">
-    <aside class="sidebar">
-      <ul>
-        <li>Рецепты</li>
-        <li>Доступный ЗОЖ</li>
-        <li>Закуски</li>
-        <li>Салаты</li>
-        <li>Первые блюда</li>
-        <li>Вторые блюда</li>
-        <li>Гарниры</li>
-        <li>Десерты</li>
-        <li>Выпечка</li>
-        <li>Напитки</li>
-        <li>Заготовки и консервы</li>
-        <li>Соусы и маринады</li>
-      </ul>
-      <ul>
-        <li>Спецпроекты</li>
-        <li>Полезные сервисы</li>
-        <li>Главное о еде</li>
-        <li>Энциклопедия</li>
-        <li>Для гостей «Пятёрочки»</li>
-      </ul>
-    </aside>
+  <div class="home">
+    <h1>Добро пожаловать на наш кулинарный сайт!</h1>
+    <p>Здесь вы найдете лучшие рецепты со всего мира.</p>
 
-    <main class="main-content">
-      <div class="search-bar">
-        <input type="text" placeholder="Поиск по рецептам и материалам">
-        <button>Поиск</button>
+    <h2>Рекомендованные рецепты</h2>
+    <div v-if="loading">Загрузка...</div>
+    <div v-else-if="error">{{ error }}</div>
+    <div v-else class="recommended-recipes">
+      <div v-for="recipe in recommendedRecipes" :key="recipe.id" class="recipe-card">
+        <h3>
+          <router-link :to="'/recipes/' + recipe.id">{{ recipe.title }}</router-link>
+        </h3>
+        <img v-if="recipe.image" :src="recipe.image" :alt="recipe.title" style="max-width: 150px;">
+        <p>{{ recipe.description.substring(0, 100) }}...</p>
       </div>
-      <div class="featured-recipe">
-        <img src="https://via.placeholder.com/350x250" alt="Блины на кефире">
-        <h3>Блины на кефире по-королевски</h3>
-        <p>Блины на кефире получаются особенно нежными и воздушными...</p>
-        <div class="recipe-meta">
-          <span>❤️ 653</span>
-          <span>⭐️ 4.3 (6)</span>
-          <span>💬 3</span>
-        </div>
-      </div>
-
-      <div class="recipe-list">
-        <h2>Последние рецепты</h2>
-        <RecipeCard
-            v-for="recipe in placeholderRecipes"
-            :key="recipe.id"
-            :recipe="recipe"
-        />
-      </div>
-    </main>
+    </div>
   </div>
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue';
-import RecipeCard from '@/components/RecipeCard.vue';
+import recipeService from '../services/recipeService.js';
 
-export default defineComponent({
-  name: 'HomeView',
-  components: {
-    RecipeCard,
+export default {
+  data() {
+    return {
+      recommendedRecipes: [],
+      loading: true,
+      error: null
+    };
   },
-  setup() {
-    const placeholderRecipes = ref([
-      { id: 1, title: 'Рецепт 1', image: 'https://via.placeholder.com/200x150' },
-      { id: 2, title: 'Рецепт 2', image: 'https://via.placeholder.com/200x150' },
-      { id: 3, title: 'Рецепт 3', image: 'https://via.placeholder.com/200x150' },
-    ]);
-    return { placeholderRecipes };
-  },
-});
+  async mounted() {
+    try {
+      this.recommendedRecipes = await recipeService.getRecommendedRecipes();
+      console.log(this.recommendedRecipes)
+      this.loading = false;
+    } catch (error) {
+      this.error = error.message;
+      this.loading = false;
+    }
+  }
+};
 </script>
 
 <style scoped>
-.home-view {
-  display: flex;
-}
-
-.sidebar {
-  width: 200px;
-  padding: 20px;
-  background-color: #f0f0f0;
-}
-
-.sidebar ul {
-  list-style: none;
-  padding: 0;
-}
-
-.sidebar li {
-  margin-bottom: 10px;
-}
-
-.main-content {
-  flex: 1;
+.home {
   padding: 20px;
 }
 
-.search-bar {
+.recommended-recipes {
   display: flex;
-  margin-bottom: 20px;
+  flex-wrap: wrap;
+  justify-content: space-around;
 }
 
-.search-bar input {
-  flex: 1;
-  padding: 10px;
-  border: 1px solid #ccc;
-}
-
-.search-bar button {
-  padding: 10px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-.featured-recipe {
-  margin-bottom: 20px;
+.recipe-card {
   border: 1px solid #ccc;
   padding: 10px;
-}
-
-.featured-recipe img {
-  max-width: 100%;
-}
-
-.recipe-meta {
-  margin-top: 10px;
-  display: flex;
-  justify-content: space-between;
-}
-
-.recipe-meta span {
-  margin-right: 10px;
-}
-
-.recipe-list {
-  margin-bottom: 20px;
-}
-
-.recipe-list h2 {
   margin-bottom: 10px;
+  width: 250px;
+  text-align: center;
 }
 </style>

@@ -1,19 +1,9 @@
-import { createApp } from 'vue';
-import { createRouter, createWebHistory } from 'vue-router';
-import App from './App.vue';
-import HomeView from './views/HomeView.vue';
-import RecipeListView from './views/RecipeListView.vue';
-import RecipeDetailView from './views/RecipeDetailView.vue';
+import { createApp } from 'vue'
+import App from './App.vue'
+import router from './router'
 
-const routes = [
-  { path: '/', name: 'home', component: HomeView },
-  { path: '/recipes', name: 'recipes', component: RecipeListView },
-  { path: '/recipes/:id', name: 'recipe-detail', component: RecipeDetailView, props: true }, 
-];
+const app = createApp(App)
 
-const router = createRouter({
-  history: createWebHistory(),
-  routes,
-});
+app.use(router)
 
-createApp(App).use(router).mount('#app');
+app.mount('#app')
