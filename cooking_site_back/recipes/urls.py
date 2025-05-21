@@ -1,23 +1,21 @@
 from django.urls import path
-from rest_framework.urlpatterns import format_suffix_patterns
-from . import views
+from .views import CategoryList, CategoryDetail, SubcategoryList, SubcategoryDetail, RecipeList, RecipeCreate, RecipeDetail, CommentList, CommentDetail, TagList, TagDetail, RecipeTagList, RecipeTagDetail, RecipeIngredientList, RecipeIngredientDetail, RecommendedRecipeList
 
 urlpatterns = [
-    path('categories/', views.CategoryList.as_view()),
-    path('categories/<int:pk>/', views.CategoryDetail.as_view()),
-    path('subcategories/', views.SubcategoryList.as_view()),
-    path('subcategories/<int:pk>/', views.SubcategoryDetail.as_view()),
-    path('recipes/', views.RecipeList.as_view()),
-    path('recipes/<int:pk>/', views.RecipeDetail.as_view()),
-    path('comments/', views.CommentList.as_view()),
-    path('comments/<int:pk>/', views.CommentDetail.as_view()),
-    path('tags/', views.TagList.as_view()),
-    path('tags/<int:pk>/', views.TagDetail.as_view()),
-    path('recipe_tags/', views.RecipeTagList.as_view()),
-    path('recipe_tags/<int:pk>/', views.RecipeTagDetail.as_view()),
-    path('recipe_ingredients/', views.RecipeIngredientList.as_view()),
-    path('recipe_ingredients/<int:pk>/', views.RecipeIngredientDetail.as_view()),
-    path('recipes/recommended/', views.RecommendedRecipeList.as_view()),
+    path('categories/', CategoryList.as_view(), name='category-list'),
+    path('categories/<int:pk>/', CategoryDetail.as_view(), name='category-detail'),
+    path('subcategories/', SubcategoryList.as_view(), name='subcategory-list'),
+    path('subcategories/<int:pk>/', SubcategoryDetail.as_view(), name='subcategory-detail'),
+    path('recipes/', RecipeList.as_view(), name='recipe-list'),
+    path('recipes/create/', RecipeCreate.as_view(), name='recipe-create'),
+    path('recipes/<int:pk>/', RecipeDetail.as_view(), name='recipe-detail'),
+    path('comments/', CommentList.as_view(), name='comment-list'),
+    path('comments/<int:pk>/', CommentDetail.as_view(), name='comment-detail'),
+    path('tags/', TagList.as_view(), name='tag-list'),
+    path('tags/<int:pk>/', TagDetail.as_view(), name='tag-detail'),
+    path('recipe-tags/', RecipeTagList.as_view(), name='recipe-tag-list'),
+    path('recipe-tags/<int:pk>/', RecipeTagDetail.as_view(), name='recipe-tag-detail'),
+    path('ingredients/', RecipeIngredientList.as_view(), name='ingredient-list'),
+    path('ingredients/<int:pk>/', RecipeIngredientDetail.as_view(), name='ingredient-detail'),
+    path('recipes/recommended-recipes/', RecommendedRecipeList.as_view(), name='recommended-recipe-list'),
 ]
-
-urlpatterns = format_suffix_patterns(urlpatterns)

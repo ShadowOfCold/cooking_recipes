@@ -2,6 +2,7 @@
 # Игнорируем конф.данные
 secret.json
 node_modules
+recipe_images
 
 /db_dumps/
 

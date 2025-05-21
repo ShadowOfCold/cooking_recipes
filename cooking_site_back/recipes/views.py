@@ -1,5 +1,5 @@
-from rest_framework import generics
-from rest_framework import permissions
+from rest_framework import generics, permissions
+from rest_framework import serializers
 import django_filters.rest_framework
 from .models import Category, Subcategory, Recipe, Ingredient, Comment, Tag, RecipeTag
 from .serializers import CategorySerializer, SubcategorySerializer, RecipeSerializer, IngredientSerializer, CommentSerializer, TagSerializer, RecipeTagSerializer
@@ -37,15 +37,32 @@ class SubcategoryDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = SubcategorySerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-class RecipeList(generics.ListCreateAPIView):
+class RecipeList(generics.ListAPIView):
     queryset = Recipe.objects.filter(is_published=True)
     serializer_class = RecipeSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    filter_backends = [django_filters.rest_framework.DjangoFilterBackend] 
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
     filterset_class = RecipeFilter
 
+class RecipeCreate(generics.CreateAPIView):
+    queryset = Recipe.objects.all()
+    serializer_class = RecipeSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        recipe = serializer.save(user=self.request.user)
+
+        ingredient_names = self.request.POST.getlist('ingredients[name]')
+        ingredient_quantities = self.request.POST.getlist('ingredients[quantity]')
+        ingredient_units = self.request.POST.getlist('ingredients[unit]')
+
+        for i in range(len(ingredient_names)):
+            name = ingredient_names[i]
+            quantity = ingredient_quantities[i]
+            unit = ingredient_units[i]
+
+            Ingredient.objects.create(recipe=recipe, name=name, quantity=quantity, unit=unit)
+
 
 class RecipeDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Recipe.objects.all()

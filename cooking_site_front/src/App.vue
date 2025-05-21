@@ -1,14 +1,45 @@
 <template>
   <div id="app">
     <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/recipes">Recipes</router-link> |
-      <router-link to="/register">Register</router-link> |
-      <router-link to="/login">Login</router-link>
+      <router-link to="/" class="nav-link">Главная страница</router-link>
+      <router-link to="/recipes" class="nav-link">Рецепты</router-link>
+      <router-link to="/recipes/create" class="nav-link">Добавить рецепт</router-link>
+      <router-link to="/register" class="nav-link" v-if="!authStore.isLoggedIn">Зарегистрироваться</router-link>
+      <router-link to="/login" class="nav-link" v-if="!authStore.isLoggedIn">Авторизоваться</router-link>
+      <router-link to="/logout" class="nav-link" v-if="authStore.isLoggedIn" @click="logout">Выйти</router-link>
     </nav>
     <router-view/>
   </div>
 </template>
+
+<script>
+import { useAuthStore } from './stores/store';
+import { useRouter } from 'vue-router';
+import { onMounted } from 'vue';
+
+export default {
+  setup() {
+    const authStore = useAuthStore();
+    const router = useRouter();
+
+    const logout = () => {
+      authStore.logout();
+      router.push('/login');
+    };
+
+    onMounted(() => {
+      if (authStore.token) {
+        authStore.isLoggedIn = true;
+      }
+    });
+
+    return {
+      authStore,
+      logout
+    };
+  }
+};
+</script>
 
 <style scoped>
 #app {
@@ -16,19 +47,30 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-}
-
-nav {
-  padding: 30px;
+  color: black;
 }
 
 nav a {
   font-weight: bold;
-  color: #2c3e50;
+  color: black;
 }
 
-nav a.router-link-exact-active {
-  color: #42b983;
+nav {
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.nav-link {
+  display: inline-block;
+  padding: 8px 16px;
+  margin-right: 10px;
+  background-color: #4CAF50;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.nav-link:hover {
+  background-color: #3e8e41;
 }
 </style>

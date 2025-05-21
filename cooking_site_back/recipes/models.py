@@ -1,7 +1,18 @@
 from django.db import models
-from django.conf import settings
 from django.utils.text import slugify
+from django.conf import settings
 from django.core.validators import MinValueValidator
+
+User = settings.AUTH_USER_MODEL
+
+def create_unique_slug(model, value, field_name='slug'):
+    slug = slugify(value, allow_unicode=True)
+    original_slug = slug
+    n = 1
+    while model.objects.filter(**{field_name: slug}).exists():
+        slug = f"{original_slug}-{n}"
+        n += 1
+    return slug
 
 class Category(models.Model):
     name = models.CharField(max_length=255, unique=True, verbose_name="Название")
@@ -38,7 +49,7 @@ class Recipe(models.Model):
         (DIFFICULTY_HARD, 'Сложно'),
     ]
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="Пользователь")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Пользователь")
     subcategory = models.ForeignKey(Subcategory, on_delete=models.CASCADE, verbose_name="Подкатегория")
     title = models.CharField(max_length=255, verbose_name="Название")
     slug = models.SlugField(max_length=255, unique=True, blank=True, verbose_name="Slug")
@@ -62,9 +73,10 @@ class Recipe(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.title, allow_unicode=True)
+        if not self.slug:
+            self.slug = create_unique_slug(Recipe, self.title)
         super().save(*args, **kwargs)
-    
+
     def update_rating(self):
       comments = self.comments.all()
       if comments.count() > 0:
@@ -72,6 +84,10 @@ class Recipe(models.Model):
         self.rating_average = average
         self.rating_count = comments.count()
         self.save()
+
+    @property
+    def author_name(self):
+        return self.user.username
 
     class Meta:
         verbose_name = "Рецепт"

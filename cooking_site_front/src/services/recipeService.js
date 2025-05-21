@@ -23,7 +23,7 @@ const recipeService = {
   },
   async getRecommendedRecipes() {
     try {
-      const response = await axios.get(`${API_URL}recommended`);
+      const response = await axios.get(`${API_URL}recommended-recipes/`);
       return response.data;
     } catch (error) {
       console.error('Error fetching recommended recipes:', error);

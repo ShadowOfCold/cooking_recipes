@@ -17,25 +17,35 @@
 </template>
 
 <script>
+import { ref } from 'vue';
 import authService from '../services/authService';
+import { useAuthStore } from '../stores/store';
+import { useRouter } from 'vue-router';
 
 export default {
-    data() {
-    return {
-        username: '',
-        password: '',
-        error: null
-    };
-    },
-    methods: {
-    async login() {
+    setup() {
+    const username = ref('');
+    const password = ref('');
+    const error = ref(null);
+    const authStore = useAuthStore();
+    const router = useRouter();
+
+    const login = async () => {
         try {
-        await authService.login(this.username, this.password);
-        this.$router.push('/');
-        } catch (error) {
-        this.error = error.message;
+        const data = await authService.login(username.value, password.value);
+        authStore.login(data.token, { id: data.user_id, username: data.username, email: data.email });
+        router.push('/');
+        } catch (err) {
+        error.value = err.message;
         }
-    }
+    };
+
+    return {
+        username,
+        password,
+        error,
+        login
+    };
     }
 };
 </script>

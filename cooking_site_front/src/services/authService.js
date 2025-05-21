@@ -1,6 +1,23 @@
 import axios from 'axios';
+import { useAuthStore } from '../stores/store';
 
 const API_URL = '/api/accounts/';
+
+const getToken = () => {
+    const authStore = useAuthStore();
+    return authStore.token;
+};
+
+const setAuthHeader = (config) => {
+    const token = getToken();
+    if (token) {
+        config.headers.Authorization = `Token ${token}`;
+    }
+    return config;
+};
+
+axios.interceptors.request.use(setAuthHeader);
+
 
 const authService = {
     async register(username, email, firstName, lastName, password, password2) {
@@ -25,10 +42,6 @@ const authService = {
                 username: username,
                 password: password
             });
-            localStorage.setItem('token', response.data.token);
-            localStorage.setItem('user_id', response.data.user_id);
-            localStorage.setItem('username', response.data.username);
-            localStorage.setItem('email', response.data.email);
             return response.data;
         } catch (error) {
             console.error('Login failed:', error);

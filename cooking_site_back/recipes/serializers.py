@@ -37,21 +37,20 @@ class RecipeTagSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class RecipeSerializer(serializers.ModelSerializer):
-    ingredients = IngredientSerializer(many=True)
-    images = StepSerializer(many=True, read_only=True)
-    comments = CommentSerializer(many=True, read_only=True)
-    user = serializers.ReadOnlyField(source='user.username')
+    ingredients = IngredientSerializer(many=True, required=False)
 
     class Meta:
         model = Recipe
-        fields = '__all__'
-        read_only_fields = ('slug', 'created_at', 'updated_at', 'user')
+        fields = ['title', 'description', 'ingredients', 'subcategory', 'prep_time', 'cook_time', 'servings', 'difficulty', 'image', 'is_published', 'author_name', 'rating_average', 'rating_count']
+        read_only_fields = ['user', 'rating_average', 'rating_count', 'slug', 'created_at', 'updated_at', 'author_name']
 
     def create(self, validated_data):
         ingredients_data = validated_data.pop('ingredients', [])
         recipe = Recipe.objects.create(**validated_data)
+
         for ingredient_data in ingredients_data:
             Ingredient.objects.create(recipe=recipe, **ingredient_data)
+
         return recipe
 
     def update(self, instance, validated_data):
