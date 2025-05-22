@@ -1,7 +1,8 @@
 from django.urls import path
-from .views import CategoryList, CategoryDetail, SubcategoryList, SubcategoryDetail, RecipeList, RecipeCreate, RecipeDetail, CommentList, CommentDetail, TagList, TagDetail, RecipeTagList, RecipeTagDetail, RecipeIngredientList, RecipeIngredientDetail, RecommendedRecipeList
+from .views import CurrentUserView, CategoryList, CategoryDetail, SubcategoryList, SubcategoryDetail, RecipeList, RecipeCreate, RecipeDetail, CommentList, CommentDetail, TagList, TagDetail, RecipeTagList, RecipeTagDetail, RecipeIngredientList, RecipeIngredientDetail, RecommendedRecipeList, RatingCreate, RatingAverage
 
 urlpatterns = [
+    path('users/me/', CurrentUserView.as_view(), name='current-user'),
     path('categories/', CategoryList.as_view(), name='category-list'),
     path('categories/<int:pk>/', CategoryDetail.as_view(), name='category-detail'),
     path('subcategories/', SubcategoryList.as_view(), name='subcategory-list'),
@@ -18,4 +19,6 @@ urlpatterns = [
     path('ingredients/', RecipeIngredientList.as_view(), name='ingredient-list'),
     path('ingredients/<int:pk>/', RecipeIngredientDetail.as_view(), name='ingredient-detail'),
     path('recipes/recommended-recipes/', RecommendedRecipeList.as_view(), name='recommended-recipe-list'),
+    path('recipes/<int:recipe_id>/ratings/', RatingCreate.as_view(), name='recipe-rating-create'),
+    path('recipes/<int:recipe_id>/ratings/average/', RatingAverage.as_view(), name='recipe-rating-average'),
 ]

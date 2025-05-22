@@ -1,17 +1,13 @@
 from django.contrib import admin
-from .models import Recipe, Category, Subcategory, Ingredient, Step
+from .models import Recipe, Category, Subcategory, Ingredient
 
 class IngredientInline(admin.TabularInline):
     model = Ingredient
     extra = 1
 
-class StepInline(admin.TabularInline):
-    model = Step
-    extra = 1
-
 @admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
-    inlines = [IngredientInline, StepInline]
+    inlines = [IngredientInline]
     list_display = ('title', 'subcategory', 'difficulty', 'is_published')
     list_filter = ('subcategory', 'difficulty', 'is_published')
     search_fields = ('title', 'description')
@@ -30,4 +26,3 @@ class SubcategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
 
 admin.site.register(Ingredient)
-admin.site.register(Step)

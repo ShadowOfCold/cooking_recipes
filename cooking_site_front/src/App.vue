@@ -4,6 +4,7 @@
       <router-link to="/" class="nav-link">Главная страница</router-link>
       <router-link to="/recipes" class="nav-link">Рецепты</router-link>
       <router-link to="/recipes/create" class="nav-link">Добавить рецепт</router-link>
+      <router-link to="/my-recipes" class="nav-link">Мои рецепты</router-link>
       <router-link to="/register" class="nav-link" v-if="!authStore.isLoggedIn">Зарегистрироваться</router-link>
       <router-link to="/login" class="nav-link" v-if="!authStore.isLoggedIn">Авторизоваться</router-link>
       <router-link to="/logout" class="nav-link" v-if="authStore.isLoggedIn" @click="logout">Выйти</router-link>

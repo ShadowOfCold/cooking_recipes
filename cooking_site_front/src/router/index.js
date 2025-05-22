@@ -1,10 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
-import RecipeDetailView from '../views/RecipeDetailView.vue';
+import RecipeDetail from '../components/RecipeDetail.vue';
 import Register from '../components/Register.vue';
 import Login from '../components/Login.vue';
 import RecipeForm from '../components/RecipeForm.vue';
 import RecipeList from '../components/RecipeList.vue';
+import EditRecipe from '../components/EditRecipe.vue';
+import MyRecipes from '../components/MyRecipes.vue';
 import { useAuthStore } from '../stores/store';
 
 const routes = [
@@ -21,8 +23,19 @@ const routes = [
   {
     path: '/recipes/:id',
     name: 'recipeDetail',
-    component: RecipeDetailView,
+    component: RecipeDetail,
     props: true
+  },
+  {
+    path: '/my-recipes',
+    name: 'MyRecipes',
+    component: MyRecipes,
+  },
+  {
+    path: '/my-recipes/:id/edit',
+    name: 'EditRecipe',
+    component: EditRecipe,
+    props: true,
   },
   {
     path: '/register',

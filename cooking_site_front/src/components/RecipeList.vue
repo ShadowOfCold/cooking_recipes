@@ -1,59 +1,125 @@
 <template>
-  <div>
-    <h2>Рецепты</h2>
-
-    <div class="recipe-filters">
-
-        <div class="filter-group">
-        <label for="titleFilter">Поиск по названию:</label>
-        <input type="text" id="titleFilter" v-model="filters.title" @input="updateFilters" placeholder="Введите название рецепта">
-        </div>
-
-        <div class="filter-group">
-        <label for="subcategoryFilter">Подкатегория:</label>
-        <select id="subcategoryFilter" v-model="filters.subcategory" @change="updateFilters">
-            <option value="">Все</option>
-            <option v-for="subcategory in subcategories" :key="subcategory.id" :value="subcategory.id">
+  <div class="recipes-page">
+    <h2 class="section-title">Рецепты</h2>
+    <div class="filters-container">
+      <div class="filter-group">
+        <label for="titleFilter">Поиск по названию</label>
+        <input
+          type="text"
+          id="titleFilter"
+          v-model="filters.title"
+          @input="updateFilters"
+          placeholder="Введите название рецепта"
+        />
+      </div>
+      <div class="filter-group">
+        <label for="subcategoryFilter">Подкатегория</label>
+        <select
+          id="subcategoryFilter"
+          v-model="filters.subcategory"
+          @change="updateFilters"
+        >
+          <option value="">Все</option>
+          <option
+            v-for="subcategory in subcategories"
+            :key="subcategory.id"
+            :value="subcategory.id"
+          >
             {{ subcategory.name }}
-            </option>
+          </option>
         </select>
-        </div>
+      </div>
     </div>
 
-    <div class="recipe-columns">
+    <div class="recipes-grid">
+      <!-- Завтрак -->
       <div class="recipe-column">
-        <h3>Завтрак</h3>
-        <div v-for="recipe in breakfastRecipes" :key="recipe.id" class="recipe-card">
-            <h4>{{ recipe.title }}</h4>
-            <img v-if="recipe.image" :src="recipe.image" alt="Изображение рецепта" class="recipe-image">
-            <p>{{ recipe.description }}</p>
-            <p>Подкатегория: {{ getSubcategoryName(recipe.subcategory) }}</p>
-            <p>Рейтинг: {{ recipe.rating_average }} ({{ recipe.rating_count }} оценок)</p>
-            <p>Автор: {{ recipe.author_name }}</p>
+        <h3 class="category-title">Завтрак</h3>
+        <div
+          v-for="recipe in breakfastRecipes"
+          :key="recipe.id"
+          class="recipe-card"
+        >
+          <h4 class="recipe-title">{{ recipe.title }}</h4>
+          <div class="image-wrapper">
+            <img
+              v-if="recipe.image"
+              :src="recipe.image"
+              alt="Изображение рецепта"
+              class="recipe-image"
+            />
+            <div v-else class="placeholder-image">Нет изображения</div>
+          </div>
+          <p class="recipe-description">{{ recipe.description }}</p>
+          <p class="recipe-info">
+            <strong>Подкатегория:</strong> {{ getSubcategoryName(recipe.subcategory) }}
+          </p>
+          <p class="recipe-info">
+            <strong>Рейтинг:</strong> {{ recipe.rating_average }} ({{ recipe.rating_count }} оценок)
+          </p>
+          <p class="recipe-info">
+            <strong>Автор:</strong> {{ recipe.author_name }}
+          </p>
         </div>
       </div>
 
       <div class="recipe-column">
-        <h3>Обед</h3>
-        <div v-for="recipe in lunchRecipes" :key="recipe.id" class="recipe-card">
-            <h4>{{ recipe.title }}</h4>
-            <img v-if="recipe.image" :src="recipe.image" alt="Изображение рецепта" class="recipe-image">
-            <p>{{ recipe.description }}</p>
-            <p>Подкатегория: {{ getSubcategoryName(recipe.subcategory) }}</p>
-            <p>Рейтинг: {{ recipe.rating_average }} ({{ recipe.rating_count }} оценок)</p>
-            <p>Автор: {{ recipe.author_name }}</p>
+        <h3 class="category-title">Обед</h3>
+        <div
+          v-for="recipe in lunchRecipes"
+          :key="recipe.id"
+          class="recipe-card"
+        >
+          <h4 class="recipe-title">{{ recipe.title }}</h4>
+          <div class="image-wrapper">
+            <img
+              v-if="recipe.image"
+              :src="recipe.image"
+              alt="Изображение рецепта"
+              class="recipe-image"
+            />
+            <div v-else class="placeholder-image">Нет изображения</div>
+          </div>
+          <p class="recipe-description">{{ recipe.description }}</p>
+          <p class="recipe-info">
+            <strong>Подкатегория:</strong> {{ getSubcategoryName(recipe.subcategory) }}
+          </p>
+          <p class="recipe-info">
+            <strong>Рейтинг:</strong> {{ recipe.rating_average }} ({{ recipe.rating_count }} оценок)
+          </p>
+          <p class="recipe-info">
+            <strong>Автор:</strong> {{ recipe.author_name }}
+          </p>
         </div>
       </div>
 
       <div class="recipe-column">
-        <h3>Ужин</h3>
-        <div v-for="recipe in dinnerRecipes" :key="recipe.id" class="recipe-card">
-            <h4>{{ recipe.title }}</h4>
-            <img v-if="recipe.image" :src="recipe.image" alt="Изображение рецепта" class="recipe-image">
-            <p>{{ recipe.description }}</p>
-            <p>Подкатегория: {{ getSubcategoryName(recipe.subcategory) }}</p>
-            <p>Рейтинг: {{ recipe.rating_average }} ({{ recipe.rating_count }} оценок)</p>
-            <p>Автор: {{ recipe.author_name }}</p>
+        <h3 class="category-title">Ужин</h3>
+        <div
+          v-for="recipe in dinnerRecipes"
+          :key="recipe.id"
+          class="recipe-card"
+        >
+          <h4 class="recipe-title">{{ recipe.title }}</h4>
+          <div class="image-wrapper">
+            <img
+              v-if="recipe.image"
+              :src="recipe.image"
+              alt="Изображение рецепта"
+              class="recipe-image"
+            />
+            <div v-else class="placeholder-image">Нет изображения</div>
+          </div>
+          <p class="recipe-description">{{ recipe.description }}</p>
+          <p class="recipe-info">
+            <strong>Подкатегория:</strong> {{ getSubcategoryName(recipe.subcategory) }}
+          </p>
+          <p class="recipe-info">
+            <strong>Рейтинг:</strong> {{ recipe.rating_average }} ({{ recipe.rating_count }} оценок)
+          </p>
+          <p class="recipe-info">
+            <strong>Автор:</strong> {{ recipe.author_name }}
+          </p>
         </div>
       </div>
     </div>
@@ -72,7 +138,6 @@ export default {
     const subcategories = ref([]);
     const filters = ref({
       title: '',
-      description: '',
       subcategory: '',
     });
 
@@ -86,11 +151,10 @@ export default {
             params.append(key, filters.value[key]);
           }
         }
-
         const response = await axios.get(`/api/recipes/?${params.toString()}`);
         recipes.value = response.data;
       } catch (err) {
-        error.value = 'Failed to load recipes';
+        error.value = 'Не удалось загрузить рецепты.';
         console.error('Failed to load recipes', err);
       } finally {
         loading.value = false;
@@ -102,7 +166,7 @@ export default {
         const response = await axios.get('/api/subcategories/');
         subcategories.value = response.data;
       } catch (err) {
-        error.value = 'Failed to load subcategories';
+        error.value = 'Не удалось загрузить подкатегории.';
         console.error('Failed to load subcategories', err);
       }
     };
@@ -111,30 +175,30 @@ export default {
       fetchRecipes();
     };
 
-    const getSubcategoryName = (subcategory) => {
-        const sub = subcategories.value.find(s => s.id === subcategory);
-        return sub ? sub.name : 'Неизвестно';
+    const getSubcategoryName = (subcategoryId) => {
+      const sub = subcategories.value.find(s => s.id === subcategoryId);
+      return sub ? sub.name : 'Неизвестно';
     };
 
     const breakfastRecipes = computed(() => {
-        return recipes.value.filter(recipe => {
-            const subcategory = subcategories.value.find(s => s.id === recipe.subcategory);
-            return subcategory && subcategory.category === 2; // ID категории "Завтрак"
-        });
+      return recipes.value.filter(recipe => {
+        const subcategory = subcategories.value.find(s => s.id === recipe.subcategory);
+        return subcategory && subcategory.category === 2; // ID категории "Завтрак"
+      });
     });
 
     const lunchRecipes = computed(() => {
-        return recipes.value.filter(recipe => {
-            const subcategory = subcategories.value.find(s => s.id === recipe.subcategory);
-            return subcategory && subcategory.category === 3; // ID категории "Обед"
-        });
+      return recipes.value.filter(recipe => {
+        const subcategory = subcategories.value.find(s => s.id === recipe.subcategory);
+        return subcategory && subcategory.category === 3; // ID категории "Обед"
+      });
     });
 
     const dinnerRecipes = computed(() => {
-        return recipes.value.filter(recipe => {
-            const subcategory = subcategories.value.find(s => s.id === recipe.subcategory);
-            return subcategory && subcategory.category === 4; // ID категории "Ужин"
-        });
+      return recipes.value.filter(recipe => {
+        const subcategory = subcategories.value.find(s => s.id === recipe.subcategory);
+        return subcategory && subcategory.category === 4; // ID категории "Ужин"
+      });
     });
 
     onMounted(() => {
@@ -154,53 +218,135 @@ export default {
       dinnerRecipes,
       getSubcategoryName,
     };
-  }
+  },
 };
 </script>
 
 <style scoped>
-.recipe-columns {
-  display: flex;
-  justify-content: space-around;
+.recipes-page {
+  padding: 30px;
 }
 
-.recipe-column {
-  width: 30%;
-  padding: 10px;
-  border: 1px solid #ccc;
-}
-
-.recipe-card {
-  margin-bottom: 10px;
-  padding: 10px;
-  border: 1px solid #eee;
-  background-color: #f9f9f9;
-}
-
-.recipe-image {
-  width: 500px;
-  height: 300px;
-}
-
-.recipe-filters {
+.section-title {
+  text-align: center;
+  font-size: 2em;
   margin-bottom: 20px;
+  color: #333;
+}
+
+.filters-container {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
 }
 
 .filter-group {
-  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  width: 200px;
 }
 
 .filter-group label {
-  display: block;
-  margin-bottom: 5px;
   font-weight: bold;
-  color: black;
+  margin-bottom: 5px;
+  color: #222;
 }
 
-.filter-group input[type="text"], .filter-group select {
-  width: 250px;
+.filter-group input[type="text"],
+.filter-group select {
   padding: 10px;
-  border-radius: 4px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
   font-size: 16px;
+}
+
+.recipes-grid {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.recipe-column {
+  flex: 1 1 30%;
+  min-width: 250px;
+  background: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.category-title {
+  text-align: center;
+  margin-bottom: 15px;
+  font-size: 1.5em;
+  color: #444;
+}
+
+.recipe-card {
+  background: #fafafa;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.recipe-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+.recipe-title {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+  color: #2c3e50;
+}
+
+.image-wrapper {
+  width: 100%;
+  height: 350px;
+  overflow: hidden;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ddd;
+}
+
+.recipe-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.placeholder-image {
+  font-size: 0.9em;
+  color: #555;
+}
+
+.recipe-description {
+  font-size: 0.95em;
+  color: #555;
+  overflow: hidden;
+}
+
+.recipe-info {
+  font-size: 0.85em;
+  color: #777;
+}
+
+@media (max-width: 768px) {
+  .filters-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  .recipe-column {
+    flex: 1 1 100%;
+  }
 }
 </style>

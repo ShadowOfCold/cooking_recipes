@@ -63,6 +63,7 @@ class Recipe(models.Model):
         verbose_name="Сложность"
     )
     image = models.ImageField(upload_to='recipe_images/', blank=True, verbose_name="Изображение")
+    steps_text = models.TextField(verbose_name="Шаги рецепта", blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата обновления")
     is_published = models.BooleanField(default=True, verbose_name="Опубликовано")
@@ -105,18 +106,6 @@ class Ingredient(models.Model):
     class Meta:
         verbose_name = "Ингредиент"
         verbose_name_plural = "Ингредиенты"
-
-class Step(models.Model):
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='steps', verbose_name="Рецепт")
-    step_number = models.IntegerField(null=True, blank=True, verbose_name="Номер шага")
-    description = models.TextField(verbose_name="Описание шага")
-
-    def __str__(self):
-        return f"Шаг {self.step_number} - {self.description[:50]}..."
-
-    class Meta:
-        verbose_name = "Шаг рецепта"
-        verbose_name_plural = "Шаги рецепта"
 
 class Comment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="Пользователь")
@@ -167,3 +156,12 @@ class RecipeTag(models.Model):
 
     def __str__(self):
         return f"{self.recipe.title} - {self.tag.name}"
+    
+class Rating(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ratings')
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='ratings')
+    rating = models.PositiveSmallIntegerField()  # 1-5
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'recipe')
