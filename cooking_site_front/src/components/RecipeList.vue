@@ -3,36 +3,18 @@
     <h2 class="section-title">Рецепты</h2>
     <div class="filters-container">
       <div class="filter-group">
-        <label for="titleFilter">Поиск по названию</label>
         <input
           type="text"
           id="titleFilter"
           v-model="filters.title"
           @input="updateFilters"
           placeholder="Введите название рецепта"
+          class="name-input"
         />
-      </div>
-      <div class="filter-group">
-        <label for="subcategoryFilter">Подкатегория</label>
-        <select
-          id="subcategoryFilter"
-          v-model="filters.subcategory"
-          @change="updateFilters"
-        >
-          <option value="">Все</option>
-          <option
-            v-for="subcategory in subcategories"
-            :key="subcategory.id"
-            :value="subcategory.id"
-          >
-            {{ subcategory.name }}
-          </option>
-        </select>
       </div>
     </div>
 
     <div class="recipes-grid">
-      <!-- Завтрак -->
       <div class="recipe-column">
         <h3 class="category-title">Завтрак</h3>
         <div
@@ -40,7 +22,9 @@
           :key="recipe.id"
           class="recipe-card"
         >
-          <h4 class="recipe-title">{{ recipe.title }}</h4>
+          <router-link :to="`/recipes/${recipe.id}`" class="recipe-title">
+            {{ recipe.title }}
+          </router-link>
           <div class="image-wrapper">
             <img
               v-if="recipe.image"
@@ -70,7 +54,9 @@
           :key="recipe.id"
           class="recipe-card"
         >
-          <h4 class="recipe-title">{{ recipe.title }}</h4>
+          <router-link :to="`/recipes/${recipe.id}`" class="recipe-title">
+            {{ recipe.title }}
+          </router-link>
           <div class="image-wrapper">
             <img
               v-if="recipe.image"
@@ -100,7 +86,9 @@
           :key="recipe.id"
           class="recipe-card"
         >
-          <h4 class="recipe-title">{{ recipe.title }}</h4>
+          <router-link :to="`/recipes/${recipe.id}`" class="recipe-title">
+            {{ recipe.title }}
+          </router-link>
           <div class="image-wrapper">
             <img
               v-if="recipe.image"
@@ -183,21 +171,21 @@ export default {
     const breakfastRecipes = computed(() => {
       return recipes.value.filter(recipe => {
         const subcategory = subcategories.value.find(s => s.id === recipe.subcategory);
-        return subcategory && subcategory.category === 2; // ID категории "Завтрак"
+        return subcategory && subcategory.category === 2;
       });
     });
 
     const lunchRecipes = computed(() => {
       return recipes.value.filter(recipe => {
         const subcategory = subcategories.value.find(s => s.id === recipe.subcategory);
-        return subcategory && subcategory.category === 3; // ID категории "Обед"
+        return subcategory && subcategory.category === 3;
       });
     });
 
     const dinnerRecipes = computed(() => {
       return recipes.value.filter(recipe => {
         const subcategory = subcategories.value.find(s => s.id === recipe.subcategory);
-        return subcategory && subcategory.category === 4; // ID категории "Ужин"
+        return subcategory && subcategory.category === 4;
       });
     });
 
@@ -225,6 +213,19 @@ export default {
 <style scoped>
 .recipes-page {
   padding: 30px;
+}
+
+.recipe-title {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #2c3e50;
+  text-decoration: none;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.name-input {
+  width: 200px;
 }
 
 .section-title {

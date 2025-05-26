@@ -1,5 +1,9 @@
 from rest_framework import serializers
-from .models import Category, Subcategory, Recipe, Ingredient, Comment, Tag, RecipeTag, Rating, User
+from .models import Category, Subcategory, Recipe, Ingredient, Comment, Tag, RecipeTag, Rating
+
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:

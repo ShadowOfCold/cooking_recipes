@@ -5,9 +5,13 @@ from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
 import django_filters.rest_framework
 from django.db import models
-from .models import Category, Subcategory, Recipe, Ingredient, Comment, Tag, RecipeTag, Rating, User
+from .models import Category, Subcategory, Recipe, Ingredient, Comment, Tag, RecipeTag, Rating
 from .serializers import UserSerializer, CategorySerializer, SubcategorySerializer, RecipeSerializer, IngredientSerializer, CommentSerializer, TagSerializer, RecipeTagSerializer, RatingSerializer
 from .filters import RecipeFilter
+
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 class IsOwnerOrReadOnly(permissions.BasePermission):
 
@@ -80,6 +84,13 @@ class RecipeDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+
+class MyRecipeList(generics.ListAPIView):
+    serializer_class = RecipeSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return Recipe.objects.filter(user=self.request.user)
 
 class CommentList(generics.ListCreateAPIView):
     queryset = Comment.objects.all()

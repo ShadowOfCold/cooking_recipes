@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import CurrentUserView, CategoryList, CategoryDetail, SubcategoryList, SubcategoryDetail, RecipeList, RecipeCreate, RecipeDetail, CommentList, CommentDetail, TagList, TagDetail, RecipeTagList, RecipeTagDetail, RecipeIngredientList, RecipeIngredientDetail, RecommendedRecipeList, RatingCreate, RatingAverage
+from .views import MyRecipeList, CurrentUserView, CategoryList, CategoryDetail, SubcategoryList, SubcategoryDetail, RecipeList, RecipeCreate, RecipeDetail, CommentList, CommentDetail, TagList, TagDetail, RecipeTagList, RecipeTagDetail, RecipeIngredientList, RecipeIngredientDetail, RecommendedRecipeList, RatingCreate, RatingAverage
 
 urlpatterns = [
     path('users/me/', CurrentUserView.as_view(), name='current-user'),
@@ -7,6 +7,7 @@ urlpatterns = [
     path('categories/<int:pk>/', CategoryDetail.as_view(), name='category-detail'),
     path('subcategories/', SubcategoryList.as_view(), name='subcategory-list'),
     path('subcategories/<int:pk>/', SubcategoryDetail.as_view(), name='subcategory-detail'),
+    path('recipes/my/', MyRecipeList.as_view(), name='my-recipe-list'),
     path('recipes/', RecipeList.as_view(), name='recipe-list'),
     path('recipes/create/', RecipeCreate.as_view(), name='recipe-create'),
     path('recipes/<int:pk>/', RecipeDetail.as_view(), name='recipe-detail'),
