@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'django_filters',
     'rest_framework',
     'rest_framework.authtoken',
-    'knox',
     'accounts',
     'recipes',
 ]
@@ -96,7 +95,6 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
-        'knox.auth.TokenAuthentication',
     ],
 }
 

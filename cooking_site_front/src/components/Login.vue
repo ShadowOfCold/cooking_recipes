@@ -119,7 +119,7 @@ input:focus {
 
 .submit-button {
   padding: 12px;
-  background-color: #2980b9;
+  background-color: #45a049;
   color: #fff;
   border: none;
   border-radius: 10px;
@@ -130,7 +130,7 @@ input:focus {
 }
 
 .submit-button:hover {
-  background-color: #3498db;
+  background-color: #45a049;
   transform: translateY(-2px);
 }
 

@@ -15,7 +15,6 @@ hvac==2.3.0
 idna==3.10
 Jinja2==3.1.6
 jmespath==1.0.1
-knox==0.1.14
 loguru==0.7.3
 MarkupSafe==3.0.2
 pillow==11.2.1
